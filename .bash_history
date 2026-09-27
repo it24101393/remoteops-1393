@@ -454,3 +454,47 @@ nano agent_1393.c
 gcc agent_1393.c -o agent_1393
 ./agent_1393
 nano agent_1393.c
+pwd
+ls
+git init
+sudo apt update
+sudo yum install -y git
+git init
+git add .
+git commit -m "Complete RemoteOps agent and client implementation ID 1393"
+git branch -M main
+
+git branch -M main
+git remote add origin <https://github.com/it24101393/remoteops-1393.git>
+git push -u origin main
+git remote add origin https://github.com/it24101393/remoteops-1393.git
+git branch -M main
+git push -u origin main
+https://github.com/settings/tokens/new
+git push -u origin main
+git log --oneline
+git add .
+git commit -m "Update server connection handling"
+git push origin main
+git log --oneline
+git add .
+git commit -m "Add error logging mechanism"
+git add .
+git commit -m "Add error logging mechanism"
+touch log.txt
+git add .
+git commit -m "Add error logging mechanism"
+git push origin main
+touch command_exec.txt
+git add .
+git commit -m "Implement command execution module"
+touch network_buffer.txt
+git add .
+git commit -m "Update network buffer size"
+git push origin main
+touch network_buffer.txt
+git add .
+git commit -m "Update network buffer size"
+git push origin main
+exi
+exit
