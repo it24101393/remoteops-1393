@@ -1,0 +1,51 @@
+nano client.c#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+
+#define PORT 5000
+
+int main() {
+    int server_fd, client_fd;
+    struct sockaddr_in server_addr;
+    char buffer[32]; // Small buffer to show stream behavior
+
+    // Create socket
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+
+    // Set server details
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = INADDR_ANY;
+    server_addr.sin_port = htons(PORT);
+
+    // Bind and listen
+    bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr));
+    listen(server_fd, 1);
+    printf("Server is listening...\n");
+
+    // Accept client
+    client_fd = accept(server_fd, NULL, NULL);
+    printf("Client connected.\n");
+
+    int total_bytes = 0;
+    int chunk_count = 1;
+
+    // Receive data in chunks (Task 2 & Task 3)
+    while (1) {
+        int n = recv(client_fd, buffer, sizeof(buffer) - 1, 0);
+        if (n <= 0) break;
+        buffer[n] = '\0';
+        total_bytes += n;
+        printf("Chunk %d:\n%s\n", chunk_count++, buffer);
+    }
+
+    printf("Total bytes received: %d\n", total_bytes);
+
+    // Task 4: Send reply back to client
+    char *reply = "Message received successfully.";
+    send(client_fd, reply, strlen(reply), 0);
+
+    close(client_fd);
+    close(server_fd);
+    return 0;
+}

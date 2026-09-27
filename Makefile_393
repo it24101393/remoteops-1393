@@ -1,0 +1,10 @@
+all: agent_393 controller_393
+
+agent_393: agent_393.c
+	gcc -Wall agent_393.c -o agent_393 -lpthread
+
+controller_393: controller_393.c
+	gcc -Wall controller_393.c -o controller_393
+
+clean:
+	rm -f agent_393 controller_393

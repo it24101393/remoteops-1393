@@ -1,0 +1,71 @@
+#include <stdio.h 
+#include <stdlib.h
+#include <unistd.h
+#include <sys/types.h
+#include <
+#include <
+#include <
+
+#define PORT 9410
+
+int main() {
+    int server_fd, client_sock;
+    struct sockaddr_in address;
+    int addrlen = sizeof(address);
+
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_fd == 0) {
+        perror("Socket creation failed");
+        exit(EXIT_FAILURE);
+    }
+
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons(PORT);
+
+    if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
+        perror("Bind failed");
+        exit(EXIT_FAILURE);
+   
+
+    if (listen(server_fd, 5) < 0) {
+        perror("Listen failed");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("RemoteOps Agent (Port %d) ආරම්භ විය. සම්බන්ධතා සඳහා බලා සිටී...\n", PORT);
+
+    while (1) {
+        client_sock = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
+        if (client_sock < 0) {
+            perror("Accept failed");
+            continue;
+        }
+
+        printf("නව Controller එකක් සාර්ථකව සම්බන්ධ විය!\n");
+
+        pid_t pid = fork();
+        if (pid < 0) {
+            perror("Fork failed");
+            close(client_sock);
+        } 
+        else if (pid == 0) {
+            close(server_fd); 
+            
+            char buffer[1024] = {0};
+            read(client_sock, buffer, 1024);
+            printf("ලැබුණු පණිවිඩය: %s\n", buffer);
+            
+            char *response = "OK AUTHENTICATED SID:3931\n";
+            write(client_sock, response, strlen(response));
+
+            close(client_sock);
+            exit(0);
+        } 
+        else {
+            close(client_sock); 
+        }
+    }
+
+    return 0;
+}
